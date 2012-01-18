@@ -5,7 +5,8 @@
 
 var express = require('express')
   , routes = require('./routes')
-
+var fs = require("fs");
+var less = require('less');
 var app = module.exports = express.createServer();
 
 // Configuration
@@ -21,6 +22,18 @@ app.configure(function(){
 
 app.configure('development', function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
+});
+
+app.get("*.less", function(req, res) {
+    var path = __dirname + '/public' + req.url;
+    fs.readFile(path, "utf8", function(err, data) {
+    if (err) throw err;
+    less.render(data, function(err, css) {
+            if (err) throw err;
+            res.header("Content-type", "text/css");
+            res.send(css);
+    });
+    });
 });
 
 app.configure('production', function(){
