@@ -1,0 +1,13 @@
+h1= title
+a(href="/") back
+p here we go!
+a(href="/new_entry") new entry
+br
+br
+p list of albums
+
+- each album in albums
+      div.album
+        div.title 
+            a(href="/album/"+album._id)!= album.title
+        div.body= album.body
